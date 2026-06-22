@@ -1,0 +1,494 @@
+{
+  "huvar7_grem1": {
+    "heavy": {
+      "n_selected": 42,
+      "top5": [
+        {
+          "position": "Pos_57",
+          "wt_aa": "F",
+          "best_mutation": "P",
+          "R_i": 0.0838,
+          "psbdm_score": -8.097
+        },
+        {
+          "position": "Pos_52",
+          "wt_aa": "F",
+          "best_mutation": "P",
+          "R_i": 0.0573,
+          "psbdm_score": -8.537
+        },
+        {
+          "position": "Pos_101",
+          "wt_aa": "L",
+          "best_mutation": "H",
+          "R_i": 0.0555,
+          "psbdm_score": -5.227
+        },
+        {
+          "position": "Pos_103",
+          "wt_aa": "R",
+          "best_mutation": "C",
+          "R_i": 0.0218,
+          "psbdm_score": -7.238
+        },
+        {
+          "position": "Pos_31",
+          "wt_aa": "G",
+          "best_mutation": "L",
+          "R_i": 0.019,
+          "psbdm_score": -7.936
+        }
+      ]
+    },
+    "light": {
+      "n_selected": 32,
+      "top5": [
+        {
+          "position": "Pos_92",
+          "wt_aa": "W",
+          "best_mutation": "P",
+          "R_i": 0.0321,
+          "psbdm_score": -7.887
+        },
+        {
+          "position": "Pos_27",
+          "wt_aa": "D",
+          "best_mutation": "W",
+          "R_i": 0.012,
+          "psbdm_score": -8.616
+        },
+        {
+          "position": "Pos_28",
+          "wt_aa": "H",
+          "best_mutation": "C",
+          "R_i": 0.0105,
+          "psbdm_score": -7.639
+        },
+        {
+          "position": "Pos_52",
+          "wt_aa": "T",
+          "best_mutation": "W",
+          "R_i": 0.0075,
+          "psbdm_score": -6.629
+        },
+        {
+          "position": "Pos_32",
+          "wt_aa": "W",
+          "best_mutation": "P",
+          "R_i": 0.0062,
+          "psbdm_score": -8.107
+        }
+      ]
+    }
+  },
+  "huvar7_grem2": {
+    "heavy": {
+      "n_selected": 42,
+      "top5": [
+        {
+          "position": "Pos_57",
+          "wt_aa": "F",
+          "best_mutation": "P",
+          "R_i": 0.1064,
+          "psbdm_score": -8.097
+        },
+        {
+          "position": "Pos_52",
+          "wt_aa": "F",
+          "best_mutation": "P",
+          "R_i": 0.0536,
+          "psbdm_score": -8.537
+        },
+        {
+          "position": "Pos_101",
+          "wt_aa": "L",
+          "best_mutation": "H",
+          "R_i": 0.0481,
+          "psbdm_score": -5.227
+        },
+        {
+          "position": "Pos_103",
+          "wt_aa": "R",
+          "best_mutation": "C",
+          "R_i": 0.0218,
+          "psbdm_score": -7.238
+        },
+        {
+          "position": "Pos_31",
+          "wt_aa": "G",
+          "best_mutation": "L",
+          "R_i": 0.017,
+          "psbdm_score": -7.936
+        }
+      ]
+    },
+    "light": {
+      "n_selected": 32,
+      "top5": [
+        {
+          "position": "Pos_92",
+          "wt_aa": "W",
+          "best_mutation": "P",
+          "R_i": 0.0368,
+          "psbdm_score": -7.887
+        },
+        {
+          "position": "Pos_27",
+          "wt_aa": "D",
+          "best_mutation": "W",
+          "R_i": 0.0122,
+          "psbdm_score": -8.616
+        },
+        {
+          "position": "Pos_52",
+          "wt_aa": "T",
+          "best_mutation": "W",
+          "R_i": 0.0096,
+          "psbdm_score": -6.629
+        },
+        {
+          "position": "Pos_28",
+          "wt_aa": "H",
+          "best_mutation": "C",
+          "R_i": 0.0086,
+          "psbdm_score": -7.639
+        },
+        {
+          "position": "Pos_32",
+          "wt_aa": "W",
+          "best_mutation": "P",
+          "R_i": 0.0063,
+          "psbdm_score": -8.107
+        }
+      ]
+    }
+  },
+  "3a13_grem1": {
+    "heavy": {
+      "n_selected": 34,
+      "top5": [
+        {
+          "position": "Pos_52",
+          "wt_aa": "H",
+          "best_mutation": "C",
+          "R_i": 0.058,
+          "psbdm_score": -7.594
+        },
+        {
+          "position": "Pos_54",
+          "wt_aa": "N",
+          "best_mutation": "W",
+          "R_i": 0.0331,
+          "psbdm_score": -8.467
+        },
+        {
+          "position": "Pos_102",
+          "wt_aa": "L",
+          "best_mutation": "E",
+          "R_i": 0.0246,
+          "psbdm_score": -5.493
+        },
+        {
+          "position": "Pos_100",
+          "wt_aa": "R",
+          "best_mutation": "C",
+          "R_i": 0.0048,
+          "psbdm_score": -7.411
+        },
+        {
+          "position": "Pos_57",
+          "wt_aa": "N",
+          "best_mutation": "W",
+          "R_i": 0.004,
+          "psbdm_score": -8.15
+        }
+      ]
+    },
+    "light": {
+      "n_selected": 30,
+      "top5": [
+        {
+          "position": "Pos_99",
+          "wt_aa": "V",
+          "best_mutation": "Q",
+          "R_i": 0.0201,
+          "psbdm_score": -6.051
+        },
+        {
+          "position": "Pos_60",
+          "wt_aa": "F",
+          "best_mutation": "N",
+          "R_i": 0.0189,
+          "psbdm_score": -6.79
+        },
+        {
+          "position": "Pos_98",
+          "wt_aa": "H",
+          "best_mutation": "C",
+          "R_i": 0.0167,
+          "psbdm_score": -7.632
+        },
+        {
+          "position": "Pos_97",
+          "wt_aa": "T",
+          "best_mutation": "C",
+          "R_i": 0.0119,
+          "psbdm_score": -5.472
+        },
+        {
+          "position": "Pos_55",
+          "wt_aa": "K",
+          "best_mutation": "C",
+          "R_i": 0.0076,
+          "psbdm_score": -7.516
+        }
+      ]
+    }
+  },
+  "3a13_grem2": {
+    "heavy": {
+      "n_selected": 34,
+      "top5": [
+        {
+          "position": "Pos_52",
+          "wt_aa": "H",
+          "best_mutation": "C",
+          "R_i": 0.0509,
+          "psbdm_score": -7.594
+        },
+        {
+          "position": "Pos_54",
+          "wt_aa": "N",
+          "best_mutation": "W",
+          "R_i": 0.0301,
+          "psbdm_score": -8.467
+        },
+        {
+          "position": "Pos_102",
+          "wt_aa": "L",
+          "best_mutation": "E",
+          "R_i": 0.0237,
+          "psbdm_score": -5.493
+        },
+        {
+          "position": "Pos_27",
+          "wt_aa": "N",
+          "best_mutation": "W",
+          "R_i": 0.0065,
+          "psbdm_score": -8.616
+        },
+        {
+          "position": "Pos_100",
+          "wt_aa": "R",
+          "best_mutation": "C",
+          "R_i": 0.005,
+          "psbdm_score": -7.411
+        }
+      ]
+    },
+    "light": {
+      "n_selected": 30,
+      "top5": [
+        {
+          "position": "Pos_60",
+          "wt_aa": "F",
+          "best_mutation": "N",
+          "R_i": 0.0211,
+          "psbdm_score": -6.79
+        },
+        {
+          "position": "Pos_99",
+          "wt_aa": "V",
+          "best_mutation": "Q",
+          "R_i": 0.0115,
+          "psbdm_score": -6.051
+        },
+        {
+          "position": "Pos_55",
+          "wt_aa": "K",
+          "best_mutation": "C",
+          "R_i": 0.0102,
+          "psbdm_score": -7.516
+        },
+        {
+          "position": "Pos_98",
+          "wt_aa": "H",
+          "best_mutation": "C",
+          "R_i": 0.0092,
+          "psbdm_score": -7.632
+        },
+        {
+          "position": "Pos_97",
+          "wt_aa": "T",
+          "best_mutation": "C",
+          "R_i": 0.0057,
+          "psbdm_score": -5.472
+        }
+      ]
+    }
+  },
+  "14d10_grem1": {
+    "heavy": {
+      "n_selected": 42,
+      "top5": [
+        {
+          "position": "Pos_57",
+          "wt_aa": "F",
+          "best_mutation": "P",
+          "R_i": 0.112,
+          "psbdm_score": -8.012
+        },
+        {
+          "position": "Pos_52",
+          "wt_aa": "F",
+          "best_mutation": "P",
+          "R_i": 0.056,
+          "psbdm_score": -8.541
+        },
+        {
+          "position": "Pos_101",
+          "wt_aa": "L",
+          "best_mutation": "H",
+          "R_i": 0.0496,
+          "psbdm_score": -5.227
+        },
+        {
+          "position": "Pos_103",
+          "wt_aa": "R",
+          "best_mutation": "C",
+          "R_i": 0.0231,
+          "psbdm_score": -7.238
+        },
+        {
+          "position": "Pos_31",
+          "wt_aa": "G",
+          "best_mutation": "L",
+          "R_i": 0.0124,
+          "psbdm_score": -7.936
+        }
+      ]
+    },
+    "light": {
+      "n_selected": 31,
+      "top5": [
+        {
+          "position": "Pos_92",
+          "wt_aa": "W",
+          "best_mutation": "P",
+          "R_i": 0.0272,
+          "psbdm_score": -7.887
+        },
+        {
+          "position": "Pos_52",
+          "wt_aa": "T",
+          "best_mutation": "W",
+          "R_i": 0.0098,
+          "psbdm_score": -6.629
+        },
+        {
+          "position": "Pos_27",
+          "wt_aa": "D",
+          "best_mutation": "W",
+          "R_i": 0.0061,
+          "psbdm_score": -8.616
+        },
+        {
+          "position": "Pos_53",
+          "wt_aa": "S",
+          "best_mutation": "W",
+          "R_i": 0.0059,
+          "psbdm_score": -7.263
+        },
+        {
+          "position": "Pos_28",
+          "wt_aa": "H",
+          "best_mutation": "C",
+          "R_i": 0.0058,
+          "psbdm_score": -7.639
+        }
+      ]
+    }
+  },
+  "14d10_grem2": {
+    "heavy": {
+      "n_selected": 42,
+      "top5": [
+        {
+          "position": "Pos_57",
+          "wt_aa": "F",
+          "best_mutation": "P",
+          "R_i": 0.083,
+          "psbdm_score": -8.012
+        },
+        {
+          "position": "Pos_52",
+          "wt_aa": "F",
+          "best_mutation": "P",
+          "R_i": 0.0512,
+          "psbdm_score": -8.541
+        },
+        {
+          "position": "Pos_101",
+          "wt_aa": "L",
+          "best_mutation": "H",
+          "R_i": 0.0472,
+          "psbdm_score": -5.227
+        },
+        {
+          "position": "Pos_103",
+          "wt_aa": "R",
+          "best_mutation": "C",
+          "R_i": 0.0234,
+          "psbdm_score": -7.238
+        },
+        {
+          "position": "Pos_31",
+          "wt_aa": "G",
+          "best_mutation": "L",
+          "R_i": 0.0167,
+          "psbdm_score": -7.936
+        }
+      ]
+    },
+    "light": {
+      "n_selected": 31,
+      "top5": [
+        {
+          "position": "Pos_92",
+          "wt_aa": "W",
+          "best_mutation": "P",
+          "R_i": 0.0392,
+          "psbdm_score": -7.887
+        },
+        {
+          "position": "Pos_28",
+          "wt_aa": "H",
+          "best_mutation": "C",
+          "R_i": 0.0086,
+          "psbdm_score": -7.639
+        },
+        {
+          "position": "Pos_55",
+          "wt_aa": "E",
+          "best_mutation": "C",
+          "R_i": 0.0064,
+          "psbdm_score": -8.565
+        },
+        {
+          "position": "Pos_52",
+          "wt_aa": "T",
+          "best_mutation": "W",
+          "R_i": 0.006,
+          "psbdm_score": -6.629
+        },
+        {
+          "position": "Pos_32",
+          "wt_aa": "W",
+          "best_mutation": "P",
+          "R_i": 0.0059,
+          "psbdm_score": -8.107
+        }
+      ]
+    }
+  }
+}

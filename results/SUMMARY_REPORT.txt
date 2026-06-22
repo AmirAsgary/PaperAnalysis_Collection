@@ -1,0 +1,96 @@
+======================================================================
+GLOBAL SUMMARY — Two-Stage Paratope Scoring with PSBDM
+======================================================================
+P_i threshold: 0.5
+Stage 1 ranking: R_i = P_i * D_i * C_i * exp(-15·Freq_wt)
+Stage 2 mutations: PSBDM Score = B(wt, mut) + w * P(k, mut)
+  where P(k, j) = 2 * log2( (f_k(j) + pseudocount) / q_j )
+  w = 1.0, pseudocount = 0.01
+  Lower PSBDM = better mutation (more dissimilar + rare at position)
+
+
+--- huvar7_grem1 ---
+  Heavy: 42 selected positions
+    Pos_57 (F) → P  R_i=0.084  PSBDM=-8.10
+    Pos_52 (F) → P  R_i=0.057  PSBDM=-8.54
+    Pos_101 (L) → H  R_i=0.056  PSBDM=-5.23
+    Pos_103 (R) → C  R_i=0.022  PSBDM=-7.24
+    Pos_31 (G) → L  R_i=0.019  PSBDM=-7.94
+  Light: 32 selected positions
+    Pos_92 (W) → P  R_i=0.032  PSBDM=-7.89
+    Pos_27 (D) → W  R_i=0.012  PSBDM=-8.62
+    Pos_28 (H) → C  R_i=0.011  PSBDM=-7.64
+    Pos_52 (T) → W  R_i=0.007  PSBDM=-6.63
+    Pos_32 (W) → P  R_i=0.006  PSBDM=-8.11
+
+--- huvar7_grem2 ---
+  Heavy: 42 selected positions
+    Pos_57 (F) → P  R_i=0.106  PSBDM=-8.10
+    Pos_52 (F) → P  R_i=0.054  PSBDM=-8.54
+    Pos_101 (L) → H  R_i=0.048  PSBDM=-5.23
+    Pos_103 (R) → C  R_i=0.022  PSBDM=-7.24
+    Pos_31 (G) → L  R_i=0.017  PSBDM=-7.94
+  Light: 32 selected positions
+    Pos_92 (W) → P  R_i=0.037  PSBDM=-7.89
+    Pos_27 (D) → W  R_i=0.012  PSBDM=-8.62
+    Pos_52 (T) → W  R_i=0.010  PSBDM=-6.63
+    Pos_28 (H) → C  R_i=0.009  PSBDM=-7.64
+    Pos_32 (W) → P  R_i=0.006  PSBDM=-8.11
+
+--- 3a13_grem1 ---
+  Heavy: 34 selected positions
+    Pos_52 (H) → C  R_i=0.058  PSBDM=-7.59
+    Pos_54 (N) → W  R_i=0.033  PSBDM=-8.47
+    Pos_102 (L) → E  R_i=0.025  PSBDM=-5.49
+    Pos_100 (R) → C  R_i=0.005  PSBDM=-7.41
+    Pos_57 (N) → W  R_i=0.004  PSBDM=-8.15
+  Light: 30 selected positions
+    Pos_99 (V) → Q  R_i=0.020  PSBDM=-6.05
+    Pos_60 (F) → N  R_i=0.019  PSBDM=-6.79
+    Pos_98 (H) → C  R_i=0.017  PSBDM=-7.63
+    Pos_97 (T) → C  R_i=0.012  PSBDM=-5.47
+    Pos_55 (K) → C  R_i=0.008  PSBDM=-7.52
+
+--- 3a13_grem2 ---
+  Heavy: 34 selected positions
+    Pos_52 (H) → C  R_i=0.051  PSBDM=-7.59
+    Pos_54 (N) → W  R_i=0.030  PSBDM=-8.47
+    Pos_102 (L) → E  R_i=0.024  PSBDM=-5.49
+    Pos_27 (N) → W  R_i=0.006  PSBDM=-8.62
+    Pos_100 (R) → C  R_i=0.005  PSBDM=-7.41
+  Light: 30 selected positions
+    Pos_60 (F) → N  R_i=0.021  PSBDM=-6.79
+    Pos_99 (V) → Q  R_i=0.011  PSBDM=-6.05
+    Pos_55 (K) → C  R_i=0.010  PSBDM=-7.52
+    Pos_98 (H) → C  R_i=0.009  PSBDM=-7.63
+    Pos_97 (T) → C  R_i=0.006  PSBDM=-5.47
+
+--- 14d10_grem1 ---
+  Heavy: 42 selected positions
+    Pos_57 (F) → P  R_i=0.112  PSBDM=-8.01
+    Pos_52 (F) → P  R_i=0.056  PSBDM=-8.54
+    Pos_101 (L) → H  R_i=0.050  PSBDM=-5.23
+    Pos_103 (R) → C  R_i=0.023  PSBDM=-7.24
+    Pos_31 (G) → L  R_i=0.012  PSBDM=-7.94
+  Light: 31 selected positions
+    Pos_92 (W) → P  R_i=0.027  PSBDM=-7.89
+    Pos_52 (T) → W  R_i=0.010  PSBDM=-6.63
+    Pos_27 (D) → W  R_i=0.006  PSBDM=-8.62
+    Pos_53 (S) → W  R_i=0.006  PSBDM=-7.26
+    Pos_28 (H) → C  R_i=0.006  PSBDM=-7.64
+
+--- 14d10_grem2 ---
+  Heavy: 42 selected positions
+    Pos_57 (F) → P  R_i=0.083  PSBDM=-8.01
+    Pos_52 (F) → P  R_i=0.051  PSBDM=-8.54
+    Pos_101 (L) → H  R_i=0.047  PSBDM=-5.23
+    Pos_103 (R) → C  R_i=0.023  PSBDM=-7.24
+    Pos_31 (G) → L  R_i=0.017  PSBDM=-7.94
+  Light: 31 selected positions
+    Pos_92 (W) → P  R_i=0.039  PSBDM=-7.89
+    Pos_28 (H) → C  R_i=0.009  PSBDM=-7.64
+    Pos_55 (E) → C  R_i=0.006  PSBDM=-8.56
+    Pos_52 (T) → W  R_i=0.006  PSBDM=-6.63
+    Pos_32 (W) → P  R_i=0.006  PSBDM=-8.11
+
+======================================================================
