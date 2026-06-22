@@ -42,7 +42,8 @@ Where:
 
 ## Prerequisites
 
-### Software
+### Software 
+Used for research, not required for replicating the results
 
 - Python ≥ 3.8
 - [HADDOCK 2.4](https://www.bonvinlab.org/software/haddock2.4/) — antibody–antigen docking
@@ -58,6 +59,13 @@ Where:
 pip install numpy pandas matplotlib seaborn biopython scipy logomaker
 ```
 
+### Data
+```bash
+git clone https://github.com/AmirAsgary/PaperAnalysis_Collection.git
+cd PaperAnalysis_Collection/
+wget -O data.zip https://owncloud.gwdg.de/index.php/s/FI9vn0vDYhn9UZD/download
+unzip data.zip
+```
 ## Repository Structure
 
 ```
