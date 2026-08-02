@@ -33,11 +33,13 @@ pip install -r requirements.txt
 
 ## Data
 
-The input data is distributed separately (≈ 130 MB unpacked). Download it into
-the repository root so that `data/` sits next to `run_analysis.py`:
+The input data is distributed separately (≈ 130 MB unpacked). 
+To download it, you need to contact amir.asgary@mpinat.mpg.de. After
+acceptance of the paper, the data would become accessible for everyone
+Download it into the repository root so that `data/` sits next to `run_analysis.py`:
 
 ```bash
-wget -O data.zip https://owncloud.gwdg.de/index.php/s/FI9vn0vDYhn9UZD/download
+wget -O data.zip <REQUESTED_DOWNLOAD_LINK>
 unzip data.zip
 ```
 
