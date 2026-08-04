@@ -16,10 +16,12 @@ from Bio.PDB import NeighborSearch, PDBParser
 from Bio.PDB.Polypeptide import is_aa
 
 from .config import (
+    ANTIBODY_CHAINS,
     ANTIGEN_CHAIN,
     CONTACT_RADIUS,
     DISTANCE_THRESHOLDS,
     EPITOPE_RESIDUE_IDS,
+    INTERFACE_CUTOFF,
 )
 
 _PARSER = PDBParser(QUIET=True)
@@ -37,18 +39,20 @@ def cluster_models(directory: str) -> list[str]:
     )
 
 
-def cluster_representatives(directory: str) -> list[str]:
+def cluster_predictions(directory: str) -> list[str]:
     """
-    The rank-1 model of each HADDOCK cluster.
+    The AlphaFold structure predicted for each HADDOCK cluster.
 
-    These are the structures that define D_i: one representative per binding
-    orientation, so that a heavily populated cluster does not dominate the
-    distance score simply by contributing more models.
+    These are the structures that define D_i: one per cluster, each predicted
+    from all four members of that cluster as templates.  Using one structure per
+    cluster keeps every distinct binding orientation weighted equally, so that a
+    heavily populated cluster cannot dominate the distance score simply by
+    contributing more models.
     """
     return sorted(
         os.path.join(directory, f)
         for f in os.listdir(directory)
-        if f.endswith("_rank1.pdb")
+        if f.endswith(".pdb")
     )
 
 
@@ -158,6 +162,73 @@ def contacting_residues(pdb_path: str, epitope_residue_id: int,
         if chain.id != ANTIGEN_CHAIN and is_aa(residue):
             partners.add(f"{chain.id}_{residue.id[1]}_{residue.resname}")
     return sorted(partners)
+
+
+def _alpha_carbons(pdb_path: str) -> tuple[np.ndarray, np.ndarray]:
+    """Cα coordinates and the chain id of every residue, in file order."""
+    structure = _PARSER.get_structure("model", pdb_path)
+    coordinates, chains = [], []
+    for chain in structure[0]:
+        for residue in chain:
+            if is_aa(residue, standard=True) and "CA" in residue:
+                coordinates.append(residue["CA"].coord)
+                chains.append(chain.id)
+    return np.asarray(coordinates), np.asarray(chains)
+
+
+def model_confidence(pdb_path: str, plddt_path: str, pae_path: str,
+                     cutoff: float = INTERFACE_CUTOFF) -> dict[str, float]:
+    """
+    Confidence of one AlphaFold model, overall and restricted to the interface.
+
+    ``pLDDT`` is the mean over all residues and ``PAE`` the mean over all residue
+    pairs of the symmetrised predicted aligned error, ``(PAE + PAEᵀ) / 2`` --
+    AlphaFold's PAE is not symmetric, so each pair is averaged over its two
+    directions before anything else is done with it.
+
+    A residue of the antibody and a residue of the antigen form an *interface
+    pair* when their Cα atoms lie within ``cutoff``.  The interface PAE is the
+    mean symmetrised PAE over those pairs, and the interface pLDDT the mean
+    pLDDT over the residues that take part in at least one of them.  Both are
+    therefore properties of the antibody–antigen interface only; H–L pairs are
+    internal to the antibody and are excluded.
+    """
+    plddt = np.load(plddt_path)
+    pae = np.load(pae_path)
+    coordinates, chains = _alpha_carbons(pdb_path)
+
+    if plddt.shape[0] != len(coordinates) or pae.shape != (len(coordinates),) * 2:
+        raise ValueError(
+            f"{pdb_path}: {len(coordinates)} residues but pLDDT has "
+            f"{plddt.shape[0]} and PAE has {pae.shape}"
+        )
+
+    pae = 0.5 * (pae + pae.T)
+    antibody = np.isin(chains, ANTIBODY_CHAINS)
+    antigen = chains == ANTIGEN_CHAIN
+
+    distances = scipy.spatial.distance.cdist(coordinates[antibody], coordinates[antigen])
+    close = distances < cutoff
+
+    antibody_index = np.flatnonzero(antibody)
+    antigen_index = np.flatnonzero(antigen)
+    rows, columns = np.nonzero(close)
+    contacting = np.union1d(antibody_index[np.unique(rows)],
+                            antigen_index[np.unique(columns)])
+
+    interface_pae = float(
+        pae[np.ix_(antibody_index, antigen_index)][close].mean()
+    ) if close.any() else float("nan")
+    interface_plddt = float(plddt[contacting].mean()) if contacting.size else float("nan")
+
+    return {
+        "plddt": float(plddt.mean()),
+        "pae": float(pae.mean()),
+        "interface_plddt": interface_plddt,
+        "interface_pae": interface_pae,
+        "n_interface_pairs": int(close.sum()),
+        "n_interface_residues": int(contacting.size),
+    }
 
 
 def epitope_contact_counts(pdb_paths: list[str]) -> dict[int, Counter]:

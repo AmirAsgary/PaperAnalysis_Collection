@@ -1,11 +1,15 @@
 # ── Input data ───────────────────────────────────────────────────────────────
-# Distributed separately; see README.md for the download link.
+# Distributed separately; see README.md.
 /data/
 /data.zip
 
 # ── Generated output ─────────────────────────────────────────────────────────
 # Fully reproducible from `python run_analysis.py`.
 /results/
+
+# ── Manuscript ───────────────────────────────────────────────────────────────
+# The paper itself is not part of the code release.
+/doc/
 
 # ── Python ───────────────────────────────────────────────────────────────────
 __pycache__/
@@ -15,19 +19,6 @@ venv/
 env/
 *.egg-info/
 
-# ── LaTeX ────────────────────────────────────────────────────────────────────
-*.aux
-*.bbl
-*.bcf
-*.blg
-*.fdb_latexmk
-*.fls
-*.log
-*.out
-*.run.xml
-*.synctex.gz
-*.toc
-
 # ── Editors and OS ───────────────────────────────────────────────────────────
 .vscode/
 .idea/
@@ -35,4 +26,3 @@ env/
 *.swp
 .DS_Store
 Thumbs.db
-doc/

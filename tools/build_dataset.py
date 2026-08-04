@@ -74,15 +74,6 @@ ANTIGENS = {
     "GREM2_alphafold3_trimmed.cif": "pdb/GREM2_modified.cif",
 }
 
-# Final AlphaFold models actually used in the manuscript (all from the
-# single-template arm; see doc/methods.tex).
-AF_FINAL = {
-    "Hu-aGREM_GREM1_alphafold.pdb": "alphafold/top_structures/_grem1_huvar7_1_model_1_model_2_ptm.pdb",
-    "Hu-aGREM_GREM2_alphafold.pdb": "alphafold/top_structures/_grem2_huvar7_2_model_1_model_2_ptm.pdb",
-    "Mu-aGREM_GREM1_alphafold.pdb": "alphafold/top_structures/_grem1_14d10_2_model_1_model_2_ptm.pdb",
-    "Mu-aGREM_GREM2_alphafold.pdb": "alphafold/top_structures/_grem2_14d10_4_model_1_model_2_ptm.pdb",
-}
-
 AF_RELAXED = {
     "Hu-aGREM_GREM1_relaxed.pdb": "alphafold/relaxed/GREM1_Huvar7.pdb",
     "Hu-aGREM_GREM2_relaxed.pdb": "alphafold/relaxed/grem2_huvar7.pdb",
@@ -196,41 +187,17 @@ def build_docking(source: str, dest: str, heavy_lengths: dict[str, int]) -> None
 
 
 def build_alphafold(source: str, dest: str) -> None:
-    out_models = os.path.join(dest, "alphafold", "final_models")
-    out_relaxed = os.path.join(dest, "alphafold", "relaxed")
-    out_bench = os.path.join(dest, "alphafold", "template_benchmark")
-    for directory in (out_models, out_relaxed, out_bench):
-        os.makedirs(directory, exist_ok=True)
+    """
+    Copy the Rosetta-relaxed structures used for visualisation.
 
-    for released_name, legacy_path in AF_FINAL.items():
-        shutil.copy2(os.path.join(source, legacy_path), os.path.join(out_models, released_name))
+    The per-cluster AlphaFold models that define D_i are built separately, by
+    ``tools/build_af_dataset.py``, from raw AFfine output.
+    """
+    out_relaxed = os.path.join(dest, "alphafold", "relaxed")
+    os.makedirs(out_relaxed, exist_ok=True)
     for released_name, legacy_path in AF_RELAXED.items():
         shutil.copy2(os.path.join(source, legacy_path), os.path.join(out_relaxed, released_name))
-
-    # Per-run pLDDT/PAE summaries, restricted to the two manuscript antibodies
-    # and relabelled.  These tables are the evidence for the template benchmark.
-    rename = {"huvar7": "Hu-aGREM", "14d10": "Mu-aGREM"}
-    for run in sorted(os.listdir(os.path.join(source, "output_test"))):
-        tsv = os.path.join(source, "output_test", run, "_final.tsv")
-        if not os.path.isfile(tsv):
-            continue
-        table = pd.read_csv(tsv, sep="\t")
-        table = table[table["antibody"].isin(rename)].copy()
-        table["antibody"] = table["antibody"].map(rename)
-        table["targetid"] = table["targetid"].replace(
-            {k: v for k, v in rename.items()}, regex=True
-        )
-        keep = ["antigen", "antibody", "targetid"] + [
-            c for c in table.columns if c.endswith("_plddt") or c.endswith("_pae")
-        ]
-        n_templates = 1 if run.endswith("_1_templates") else 4
-        table = table[keep]
-        table.insert(3, "n_templates", n_templates)
-        table.insert(4, "alphafold_params", run.replace("_1_templates", ""))
-        table.to_csv(os.path.join(out_bench, f"{run}.tsv"), sep="\t", index=False)
-
-    print(f"  alphafold/final_models: {len(AF_FINAL)} | relaxed: {len(AF_RELAXED)} | "
-          f"template_benchmark: {len(os.listdir(out_bench))} tables")
+    print(f"  alphafold/relaxed: {len(AF_RELAXED)} structures")
 
 
 def main() -> int:
