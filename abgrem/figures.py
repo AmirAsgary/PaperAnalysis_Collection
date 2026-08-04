@@ -162,7 +162,12 @@ def grem1_vs_grem2(grem1: pd.DataFrame, grem2: pd.DataFrame,
 
 def top_positions_bar(grem1: pd.DataFrame, grem2: pd.DataFrame,
                       title: str, path: str, top_n: int = 10) -> None:
-    """The highest-scoring positions, GREM1 filled and GREM2 open."""
+    """
+    The highest-scoring paratope positions, GREM1 open and GREM2 filled.
+
+    Positions are labelled ``<number>_<wild type>`` and the score is the
+    paratoping score R_i.
+    """
     positions = sorted(
         set(grem1[grem1["selected"]].index) | set(grem2[grem2["selected"]].index),
         key=lambda p: int(p.split("_")[1]),
@@ -171,7 +176,7 @@ def top_positions_bar(grem1: pd.DataFrame, grem2: pd.DataFrame,
         return
     rows = [
         {
-            "position": f"{grem1.loc[p, 'residue']}{p.split('_')[1]}",
+            "position": f"{p.split('_')[1]}_{grem1.loc[p, 'residue']}",
             "GREM1_R_i": float(grem1.loc[p, "R_i"]),
             "GREM2_R_i": float(grem2.loc[p, "R_i"]),
         }
@@ -188,12 +193,12 @@ def top_positions_bar(grem1: pd.DataFrame, grem2: pd.DataFrame,
     x = np.arange(len(data))
     fig, ax = plt.subplots(figsize=(max(5, len(data) * 0.5), 4))
     ax.bar(x - 0.2, data["GREM1_R_i"], 0.4, label="GREM1",
-           color="black", edgecolor="black", linewidth=0.6)
-    ax.bar(x + 0.2, data["GREM2_R_i"], 0.4, label="GREM2",
            color="white", edgecolor="black", linewidth=0.6)
+    ax.bar(x + 0.2, data["GREM2_R_i"], 0.4, label="GREM2",
+           color="black", edgecolor="black", linewidth=0.6)
     ax.set_xticks(x)
     ax.set_xticklabels(data["position"], rotation=90, fontsize=9)
-    ax.set_ylabel("$R_i$")
+    ax.set_ylabel("Paratoping Score ($R_i$)")
     ax.set_title(title, fontsize=12)
     ax.legend(frameon=False)
     ax.spines[["top", "right"]].set_visible(False)
@@ -256,26 +261,42 @@ def mutation_heatmap(psbdm_by_chain: dict[str, pd.DataFrame],
         _save(fig, f"{path}_{suffix}", pdf=True)
 
 
-def template_benchmark(table: pd.DataFrame, path: str) -> None:
+def model_confidence(table: pd.DataFrame, path: str) -> None:
     """
-    Supplementary: AlphaFold pLDDT with one template versus four.
+    Supplementary: confidence of the per-cluster AlphaFold models.
 
-    Supports the choice of a single-template protocol in the methods; not a
-    main-text panel.
+    One point per cluster, in four panels: pLDDT and PAE over the whole model,
+    and the same two quantities restricted to the antibody–antigen interface.
     """
     table.to_csv(f"{_prepare(path)}.csv", index=False)
-    fig, ax = plt.subplots(figsize=(6, 4.5))
-    sns.boxplot(data=table, x="complex", y="plddt", hue="n_templates",
-                palette={1: "white", 4: "#b0b0b0"}, width=0.6, ax=ax)
-    sns.stripplot(data=table, x="complex", y="plddt", hue="n_templates",
-                  dodge=True, palette={1: "black", 4: "black"},
-                  size=3, alpha=0.5, ax=ax, legend=False)
-    handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles[:2], ["1 template", "4 templates"],
-              frameon=False, title=None, loc="lower left")
-    ax.set_xlabel("")
-    ax.set_ylabel("pLDDT")
-    ax.set_title("AlphaFold confidence by number of docked templates", fontsize=12)
-    ax.tick_params(axis="x", rotation=45)
-    ax.spines[["top", "right"]].set_visible(False)
+
+    panels = (
+        ("plddt", "pLDDT", "Whole model"),
+        ("interface_plddt", "Interface pLDDT", "Interface"),
+        ("pae", "PAE (Å)", "Whole model"),
+        ("interface_pae", "Interface PAE (Å)", "Interface"),
+    )
+    order = sorted(table["complex"].unique())
+
+    fig, axes = plt.subplots(2, 2, figsize=(11, 8))
+    for ax, (column, label, scope) in zip(axes.ravel(), panels):
+        sns.boxplot(data=table, x="complex", y=column, order=order,
+                    color="white", width=0.55, fliersize=0, ax=ax)
+        for line in ax.lines:
+            line.set_color("black")
+        for patch in ax.patches:
+            patch.set_edgecolor("black")
+            patch.set_facecolor("white")
+        sns.stripplot(data=table, x="complex", y=column, order=order,
+                      color="black", size=4, alpha=0.6, jitter=0.18, ax=ax)
+        ax.set_xlabel("")
+        ax.set_ylabel(label)
+        ax.set_title(scope, fontsize=11)
+        ax.tick_params(axis="x", rotation=30)
+        for tick in ax.get_xticklabels():
+            tick.set_horizontalalignment("right")
+        ax.spines[["top", "right"]].set_visible(False)
+
+    fig.suptitle("AlphaFold confidence of the per-cluster models", fontsize=13)
+    fig.tight_layout()
     _save(fig, path, pdf=True)

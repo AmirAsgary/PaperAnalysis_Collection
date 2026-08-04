@@ -83,7 +83,10 @@ def conservation(sequences: list[str]) -> np.ndarray:
     A fully conserved column scores 1, a uniformly variable column scores 0.
     """
     matrix = _frequency_matrix(sequences)
-    with np.errstate(divide="ignore", invalid="ignore"):
-        logs = np.log2(matrix, where=matrix > 0)
-    entropy = -np.nansum(np.where(matrix > 0, matrix * logs, 0.0), axis=0)
+    # ``out`` is required as well as ``where``: without it the entries the
+    # condition skips are left uninitialised.  They are discarded a line later,
+    # so the result is the same either way, but zeroing them keeps the
+    # computation free of uninitialised memory.
+    logs = np.log2(matrix, where=matrix > 0, out=np.zeros_like(matrix))
+    entropy = -np.sum(np.where(matrix > 0, matrix * logs, 0.0), axis=0)
     return 1.0 - entropy / MAX_ENTROPY

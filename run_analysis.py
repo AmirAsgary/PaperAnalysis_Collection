@@ -128,8 +128,10 @@ def analyse_complex(pair: config.Complex, antibody_data: dict, data_dir: str,
     print(f"\n{pair.label}")
     docking_dir = os.path.join(data_dir, "docking", pair.name)
     models = structure.cluster_models(docking_dir)
-    representatives = structure.cluster_representatives(docking_dir)
-    print(f"  {len(models)} docked models, {len(representatives)} cluster representatives")
+    predictions = structure.cluster_predictions(
+        os.path.join(data_dir, "alphafold", "cluster_predictions", pair.name)
+    )
+    print(f"  {len(models)} docked models, {len(predictions)} per-cluster AlphaFold models")
 
     logo = analyse_epitope(
         pair, models, os.path.join(results_dir, "epitope_contacts", pair.name)
@@ -147,7 +149,7 @@ def analyse_complex(pair: config.Complex, antibody_data: dict, data_dir: str,
         os.path.join(results_dir, "figures", "epitope_profiles", pair.name),
     )
 
-    distance = structure.mean_distance_score(representatives)
+    distance = structure.mean_distance_score(predictions)
     chain_key = {"heavy": "H", "light": "L"}
 
     outcome = {}
@@ -216,7 +218,7 @@ def comparison_figures(results: dict, results_dir: str) -> None:
             )
             figures.top_positions_bar(
                 grem1[chain]["stage1"], grem2[chain]["stage1"],
-                f"{antibody.label} — {chain} chain",
+                f"Predicted paratope residues on {chain} chain",
                 os.path.join(results_dir, "figures", "top_positions", stem),
             )
         print(f"  {antibody.label}: GREM1 vs GREM2, heavy and light")
@@ -236,50 +238,39 @@ def comparison_figures(results: dict, results_dir: str) -> None:
         print(f"  {antibody.label}: candidate mutation heat map")
 
 
-def template_benchmark_figure(data_dir: str, results_dir: str) -> pd.DataFrame | None:
+def confidence_figure(data_dir: str, results_dir: str) -> pd.DataFrame | None:
     """
-    Supplementary: the AlphaFold single- versus multi-template comparison that
-    motivated using one docked template per prediction.
+    Supplementary: confidence of the per-cluster AlphaFold models.
 
-    The manuscript reports only the single-template protocol; this figure is
-    kept as supporting evidence for that choice and is not a main-text panel.
+    Reports pLDDT and PAE over the whole model and restricted to the
+    antibody–antigen interface, one row per cluster.
     """
-    bench_dir = os.path.join(data_dir, "alphafold", "template_benchmark")
-    if not os.path.isdir(bench_dir):
-        return None
-
     rows = []
-    for filename in sorted(os.listdir(bench_dir)):
-        if not filename.endswith(".tsv"):
-            continue
-        table = pd.read_csv(os.path.join(bench_dir, filename), sep="\t")
-        plddt_columns = [c for c in table.columns
-                         if c.endswith("_plddt") and not c.split("_plddt")[0][-1].isdigit()]
-        for _, row in table.iterrows():
-            for column in plddt_columns:
-                rows.append(
-                    {
-                        "complex": f"{row['antibody']}·{row['antigen'].upper()}",
-                        "targetid": row["targetid"],
-                        "alphafold_params": row["alphafold_params"],
-                        "n_templates": int(row["n_templates"]),
-                        "plddt": float(row[column]),
-                    }
-                )
+    for pair in config.COMPLEXES:
+        directory = os.path.join(data_dir, "alphafold", "cluster_predictions", pair.name)
+        if not os.path.isdir(directory):
+            return None
+        for path in structure.cluster_predictions(directory):
+            cluster = os.path.basename(path)[: -len(".pdb")]
+            metrics = structure.model_confidence(
+                path,
+                os.path.join(directory, f"{cluster}_plddt.npy"),
+                os.path.join(directory, f"{cluster}_pae.npy"),
+            )
+            rows.append({"complex": pair.label, "cluster": cluster, **metrics})
     if not rows:
         return None
 
     table = pd.DataFrame(rows)
-    figures.template_benchmark(
+    figures.model_confidence(
         table,
-        os.path.join(results_dir, "figures", "supplementary",
-                     "alphafold_template_choice"),
+        os.path.join(results_dir, "figures", "supplementary", "model_confidence"),
     )
-    stats = (table.groupby("n_templates")["plddt"]
+    stats = (table[["plddt", "interface_plddt", "pae", "interface_pae"]]
              .agg(["count", "mean", "std", "min", "max"]).round(2))
-    print("\nSupplementary — AlphaFold template choice (pLDDT)")
+    print("\nSupplementary — AlphaFold model confidence")
     print(stats.to_string())
-    return stats
+    return table
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -290,8 +281,8 @@ def write_summary(results: dict, benchmark: pd.DataFrame | None,
         "Paratope scoring and mutation prioritisation — summary",
         "=" * 72,
         f"Stage 1   R_i = P_i · D_i · C_i · F_i,  selection at P_i > {config.P_THRESHOLD}",
-        f"          D_i thresholds {list(config.DISTANCE_THRESHOLDS)} Å, "
-        f"averaged over cluster representatives",
+        f"          D_i thresholds {list(config.DISTANCE_THRESHOLDS)} Å, averaged over "
+        f"the per-cluster AlphaFold models",
         f"          F_i = exp(-{config.WT_FREQUENCY_DECAY:g} · f_wt)",
         f"Stage 2   S_k(i,j) = B(i,j) + {config.PSBDM_WEIGHT:g} · P(k,j),  "
         f"P(k,j) = 2·log2((f + {config.PSBDM_PSEUDOCOUNT:g}) / {config.BACKGROUND_FREQUENCY:g})",
@@ -321,9 +312,11 @@ def write_summary(results: dict, benchmark: pd.DataFrame | None,
         lines.append("")
 
     if benchmark is not None:
-        lines += ["Supplementary — AlphaFold template choice (pLDDT)",
-                  benchmark.to_string(), ""]
-        payload["alphafold_template_choice"] = benchmark.to_dict("index")
+        stats = (benchmark[["plddt", "interface_plddt", "pae", "interface_pae"]]
+                 .agg(["count", "mean", "std", "min", "max"]).round(2))
+        lines += ["Supplementary — AlphaFold model confidence",
+                  stats.to_string(), ""]
+        payload["model_confidence"] = stats.to_dict()
 
     lines.append("=" * 72)
     text = "\n".join(lines)
@@ -366,8 +359,8 @@ def main() -> int:
         )
 
     comparison_figures(results, args.results)
-    benchmark = template_benchmark_figure(args.data, args.results)
-    write_summary(results, benchmark, args.results)
+    confidence = confidence_figure(args.data, args.results)
+    write_summary(results, confidence, args.results)
     print(f"\nDone. All output in {args.results}/")
     return 0
 

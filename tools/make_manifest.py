@@ -25,13 +25,14 @@ DESCRIPTIONS = {
     "docking": (
         "HADDOCK 2.4 models, one directory per antibody-antigen pair: the ten "
         "best-scoring clusters with their four best members each. Chains are H "
-        "(heavy), L (light) and G (antigen), each numbered from 1. The _rank1 "
-        "model of each cluster is that cluster's representative."
+        "(heavy), L (light) and G (antigen), each numbered from 1. Used for the "
+        "epitope-contact analysis, and as the templates for the AlphaFold models."
     ),
     "alphafold": (
-        "Final template-guided AlphaFold models, their Rosetta-relaxed "
-        "counterparts, and the per-run pLDDT/PAE tables behind the "
-        "one-template versus four-template comparison."
+        "One AlphaFold model per HADDOCK cluster, predicted from all four "
+        "members of that cluster as templates, with its pLDDT and PAE arrays; "
+        "these define the distance score D_i. Plus the Rosetta-relaxed "
+        "structures used for visualisation."
     ),
 }
 

@@ -23,6 +23,16 @@ ANTIGEN_CHAIN = "G"
 #: the antibody residue is counted as an interaction partner (Å).
 CONTACT_RADIUS = 5.5
 
+#: Cα–Cα separation below which an antibody residue and an antigen residue are
+#: treated as an interface pair, for the interface pLDDT and interface PAE of
+#: the AlphaFold models (Å).
+INTERFACE_CUTOFF = 8.0
+
+#: Chains of the antibody, and of the antigen, in the AlphaFold models.  The
+#: interface metrics are computed across this split, i.e. antibody against
+#: antigen; H–L pairs are internal to the antibody and are not interface pairs.
+ANTIBODY_CHAINS = ("H", "L")
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 1 — position selection:  R_i = P_i · D_i · C_i · F_i
