@@ -30,8 +30,9 @@ pip install -r requirements.txt
 
 ## Data
 
-The input data is distributed separately (≈ 130 MB unpacked). To obtain it,
-contact amir.asgary@mpinat.mpg.de; it becomes publicly available after
+The input data is distributed separately (≈ 130 MB unpacked) under 
+https://doi.org/10.5281/zenodo.22655740. To obtain it, contact 
+amir.asgary@mpinat.mpg.de; it becomes publicly available after
 publication. Unpack it so that `data/` sits next to `run_analysis.py`.
 
 ```
